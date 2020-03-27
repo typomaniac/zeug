@@ -1,0 +1,45 @@
+
+#include <AccelStepper.h>
+#include <AFMotor.h>
+AF_Stepper motor(200, 2);
+
+
+int senRead = 5;            
+int limit = 300;            
+
+
+void forwardstep() {
+  motor.onestep(FORWARD, SINGLE);
+ 
+}
+void backwardstep() {
+  motor.onestep(BACKWARD, DOUBLE);
+}
+
+
+AccelStepper stepper(forwardstep, backwardstep);
+
+void setup()
+{
+
+  stepper.setMaxSpeed(600.0);
+  stepper.setAcceleration(900.0);
+  stepper.moveTo(900);  
+  Serial.begin(9600);
+
+}
+
+void loop()
+{
+  int val = analogRead(senRead); //photodiode reading
+
+  if (val <= limit)   {
+
+/* just do nothing */
+   
+  }   else if (val > limit)  { 
+     
+    stepper.run();
+  }
+    
+}
